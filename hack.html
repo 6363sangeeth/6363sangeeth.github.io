@@ -92,7 +92,7 @@
       background-color: #45a049;
     }
 
-    #ipDisplay, #locationDisplay, #deviceDisplay {
+    #ipDisplay, #locationDisplay, #deviceDisplay, #batteryDisplay {
       font-size: 16px;
       color: #FF0000;
       margin-top: 20px;
@@ -151,6 +151,10 @@
     Device Info: <span id="userDevice">Loading...</span>
   </div>
 
+  <div id="batteryDisplay">
+    Battery Status: <span id="batteryStatus">Loading...</span>
+  </div>
+
   <div id="popup">
     <p><strong>HACKER WARNING: SYSTEM COMPROMISED</strong></p>
     <p>Click the button to resolve!</p>
@@ -191,6 +195,19 @@
       }
 
       document.getElementById('userDevice').textContent = deviceInfo;
+    }
+
+    // Fetch battery information
+    function getBatteryInfo() {
+      if (navigator.getBattery) {
+        navigator.getBattery().then(function(battery) {
+          const batteryStatus = `Level: ${Math.round(battery.level * 100)}%`;
+          const chargingStatus = battery.charging ? "Charging" : "Not Charging";
+          document.getElementById('batteryStatus').textContent = `${batteryStatus}, ${chargingStatus}`;
+        });
+      } else {
+        document.getElementById('batteryStatus').textContent = 'Battery info not available';
+      }
     }
 
     // Task-specific code for each window
@@ -277,10 +294,11 @@
     hackerSound.loop = true;
     hackerSound.play();
 
-    // Fetch the user's IP, location, and device information when the page loads
+    // Fetch the user's IP, location, device information, and battery info when the page loads
     window.onload = function() {
       fetchUserIPAndLocation();
       getDeviceInfo();
+      getBatteryInfo();
     };
 
   </script>
