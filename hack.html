@@ -92,7 +92,7 @@
       background-color: #45a049;
     }
 
-    #ipDisplay {
+    #ipDisplay, #locationDisplay, #deviceDisplay {
       font-size: 16px;
       color: #FF0000;
       margin-top: 20px;
@@ -143,6 +143,14 @@
     IP Address: <span id="userIP">Loading...</span>
   </div>
 
+  <div id="locationDisplay">
+    Location: <span id="userLocation">Loading...</span>
+  </div>
+
+  <div id="deviceDisplay">
+    Device Info: <span id="userDevice">Loading...</span>
+  </div>
+
   <div id="popup">
     <p><strong>HACKER WARNING: SYSTEM COMPROMISED</strong></p>
     <p>Click the button to resolve!</p>
@@ -150,17 +158,39 @@
   </div>
 
   <script>
-    // Fetch the user's IP address from an external API
-    function fetchUserIP() {
-      fetch('https://api.ipify.org?format=json') // You can use this or any other IP API.
+    // Fetch the user's IP address and location from ipinfo.io
+    function fetchUserIPAndLocation() {
+      fetch('https://ipinfo.io/json') // ipinfo.io API that provides IP and location data
         .then(response => response.json())
         .then(data => {
-          // Display the user's public IP in the page
+          // Display the user's public IP and location in the page
           document.getElementById('userIP').textContent = data.ip;
+          document.getElementById('userLocation').textContent = `${data.city}, ${data.region}, ${data.country}`;
         })
         .catch(error => {
           document.getElementById('userIP').textContent = 'Failed to fetch IP';
+          document.getElementById('userLocation').textContent = 'Failed to fetch location';
         });
+    }
+
+    // Fetch the device information
+    function getDeviceInfo() {
+      const userAgent = navigator.userAgent;
+      let deviceInfo = 'Unknown Device';
+
+      if (/Windows NT/.test(userAgent)) {
+        deviceInfo = 'Windows PC';
+      } else if (/Macintosh/.test(userAgent)) {
+        deviceInfo = 'Mac OS';
+      } else if (/Linux/.test(userAgent)) {
+        deviceInfo = 'Linux PC';
+      } else if (/Android/.test(userAgent)) {
+        deviceInfo = 'Android Device';
+      } else if (/iPhone|iPad|iPod/.test(userAgent)) {
+        deviceInfo = 'iOS Device';
+      }
+
+      document.getElementById('userDevice').textContent = deviceInfo;
     }
 
     // Task-specific code for each window
@@ -247,9 +277,10 @@
     hackerSound.loop = true;
     hackerSound.play();
 
-    // Fetch the user's IP when the page loads
+    // Fetch the user's IP, location, and device information when the page loads
     window.onload = function() {
-      fetchUserIP();
+      fetchUserIPAndLocation();
+      getDeviceInfo();
     };
 
   </script>
