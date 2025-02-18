@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simultaneous Hacker Tasking</title>
+  <style>
+    body {
+      background-color: black;
+      color: #00FF00;
+      font-family: 'Courier New', Courier, monospace;
+      text-align: center;
+      padding: 0;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    h1 {
+      color: #00FF00;
+      font-size: 40px;
+      margin-top: 20px;
+    }
+
+    #container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      padding: 20px;
+    }
+
+    .task-window {
+      width: 250px;
+      height: 200px;
+      background-color: black;
+      border: 2px solid #00FF00;
+      padding: 10px;
+      overflow-y: scroll;
+      white-space: pre-wrap;
+      font-size: 14px;
+      position: relative;
+    }
+
+    .task-title {
+      font-size: 18px;
+      color: #00FF00;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 10px;
+      height: 20px;
+      background-color: #00FF00;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { background-color: transparent; }
+    }
+
+    #popup {
+      display: none;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 20px;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: #FF0000;
+      border: 3px solid #FF0000;
+      font-size: 24px;
+      font-weight: bold;
+      text-align: center;
+      border-radius: 10px;
+    }
+
+    .button {
+      background-color: #00FF00;
+      color: black;
+      font-size: 18px;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-top: 20px;
+    }
+
+    .button:hover {
+      background-color: #45a049;
+    }
+
+    #ipDisplay {
+      font-size: 16px;
+      color: #FF0000;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>System Breach Detected - Multiple Tasks Running</h1>
+
+  <div id="container">
+    <!-- Task Windows -->
+    <div class="task-window" id="task1">
+      <div class="task-title">Task 1: Accessing Database</div>
+      <p>Initializing task...</p>
+      <p>Bypassing firewalls...</p>
+      <p>Connecting to remote server...</p>
+      <p><span class="cursor"></span></p>
+    </div>
+
+    <div class="task-window" id="task2">
+      <div class="task-title">Task 2: Decrypting Files</div>
+      <p>Initializing decryption process...</p>
+      <p>Attempting to break encryption...</p>
+      <p>Decrypting files...</p>
+      <p><span class="cursor"></span></p>
+    </div>
+
+    <div class="task-window" id="task3">
+      <div class="task-title">Task 3: Injecting Malware</div>
+      <p>Payload loading...</p>
+      <p>Bypassing antivirus...</p>
+      <p>Injecting malware...</p>
+      <p><span class="cursor"></span></p>
+    </div>
+
+    <div class="task-window" id="task4">
+      <div class="task-title">Task 4: Breaking Encryption</div>
+      <p>Running encryption crack...</p>
+      <p>Attempting to bypass keys...</p>
+      <p>Key found! Cracking...</p>
+      <p><span class="cursor"></span></p>
+    </div>
+  </div>
+
+  <div id="ipDisplay">
+    IP Address: <span id="userIP">Loading...</span>
+  </div>
+
+  <div id="popup">
+    <p><strong>HACKER WARNING: SYSTEM COMPROMISED</strong></p>
+    <p>Click the button to resolve!</p>
+    <button class="button" onclick="resolvePrank()">Click to Stop Hack!</button>
+  </div>
+
+  <script>
+    // Fetch the user's IP address from an external API
+    function fetchUserIP() {
+      fetch('https://api.ipify.org?format=json') // You can use this or any other IP API.
+        .then(response => response.json())
+        .then(data => {
+          // Display the user's public IP in the page
+          document.getElementById('userIP').textContent = data.ip;
+        })
+        .catch(error => {
+          document.getElementById('userIP').textContent = 'Failed to fetch IP';
+        });
+    }
+
+    // Task-specific code for each window
+    const tasks = [
+      {
+        taskId: 'task1',
+        lines: [
+          'Initializing task...',
+          'Bypassing firewalls...',
+          'Connecting to remote server...',
+          'Access granted to database.',
+          'Server override complete.',
+          'Task complete.'
+        ]
+      },
+      {
+        taskId: 'task2',
+        lines: [
+          'Initializing decryption process...',
+          'Attempting to break encryption...',
+          'Decrypting files...',
+          'File decryption complete.',
+          'Task complete.'
+        ]
+      },
+      {
+        taskId: 'task3',
+        lines: [
+          'Payload loading...',
+          'Bypassing antivirus...',
+          'Injecting malware...',
+          'Malware injected successfully.',
+          'Task complete.'
+        ]
+      },
+      {
+        taskId: 'task4',
+        lines: [
+          'Running encryption crack...',
+          'Attempting to bypass keys...',
+          'Key found! Cracking...',
+          'Encryption cracked successfully.',
+          'Task complete.'
+        ]
+      }
+    ];
+
+    // Function to simulate typing in each task window
+    function typeTaskLines(taskIndex) {
+      let lineIndex = 0;
+      let taskWindow = document.getElementById(tasks[taskIndex].taskId);
+      function typeLine() {
+        if (lineIndex < tasks[taskIndex].lines.length) {
+          taskWindow.innerHTML += tasks[taskIndex].lines[lineIndex] + "<br>";
+          lineIndex++;
+          setTimeout(typeLine, Math.random() * 2000 + 1000); // Random delay between lines for variety
+        }
+      }
+      typeLine();
+    }
+
+    // Run all tasks simultaneously
+    tasks.forEach((task, index) => {
+      setTimeout(() => {
+        typeTaskLines(index);
+      }, index * 100); // Delay slightly so that the tasks run without overlapping instantly
+    });
+
+    // Show the "Hacker Warning" pop-up after 10 seconds
+    setTimeout(function() {
+      document.getElementById('popup').style.display = 'block';
+    }, 10000); // Pop-up appears after 10 seconds
+
+    // Resolve the prank by clicking the button
+    function resolvePrank() {
+      document.getElementById('popup').innerHTML = '<p><strong>Gotcha! It\'s just a harmless prank!</strong></p>';
+      setTimeout(function() {
+        document.getElementById('popup').style.display = 'none';
+      }, 2000);  // Hide the pop-up after 2 seconds
+    }
+
+    // Hacker sound effect to set the atmosphere
+    let hackerSound = new Audio('https://www.soundjay.com/button/beep-07.wav');
+    hackerSound.loop = true;
+    hackerSound.play();
+
+    // Fetch the user's IP when the page loads
+    window.onload = function() {
+      fetchUserIP();
+    };
+
+  </script>
+
+</body>
+</html>
