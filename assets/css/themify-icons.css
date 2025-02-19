@@ -1,5 +1,7 @@
 @font-face {
 	font-family: 'themify';
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/themify-icons/css/themify-icons.css">
+
 	src:url('../fonts/themify.eot?-fvbane');
 	src:url('../fonts/themify.eot?#iefix-fvbane') format('embedded-opentype'),
 		url('../fonts/themify.woff?-fvbane') format('woff'),
