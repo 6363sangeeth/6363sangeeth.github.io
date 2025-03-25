@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP8266 Relay Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+            background-color: #f5f5f5;
+        }
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin: 10px;
+        }
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #4CAF50;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .status {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>ESP8266 Relay Control</h1>
+        <p>Control your home appliances remotely</p>
+        
+        <h3>Relay 1 (D1)</h3>
+        <label class="switch">
+            <input type="checkbox" id="relay1">
+            <span class="slider"></span>
+        </label>
+        
+        <h3>Relay 2 (D2)</h3>
+        <label class="switch">
+            <input type="checkbox" id="relay2">
+            <span class="slider"></span>
+        </label>
+        
+        <div id="status" class="status">Status: Ready</div>
+    </div>
+
+    <script>
+        // Replace with your Blynk Auth Token
+        const BLYNK_AUTH = "Y-dRz4pLUeLOeRx-nRcC1Z5MCfludNMX";
+        
+        // Send command to Blynk
+        async function sendCommand(pin, value) {
+            const url = `https://blynk.cloud/external/api/update?token=${BLYNK_AUTH}&${pin}=${value}`;
+            document.getElementById("status").textContent = "Status: Sending...";
+            
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    document.getElementById("status").textContent = `Status: ${pin} set to ${value}`;
+                } else {
+                    document.getElementById("status").textContent = "Status: Failed!";
+                }
+            } catch (error) {
+                document.getElementById("status").textContent = "Status: Error - " + error;
+            }
+        }
+
+        // Set up event listeners
+        document.getElementById("relay1").addEventListener("change", (e) => {
+            sendCommand("V1", e.target.checked ? 1 : 0);
+        });
+        
+        document.getElementById("relay2").addEventListener("change", (e) => {
+            sendCommand("V2", e.target.checked ? 1 : 0);
+        });
+    </script>
+</body>
+</html>
