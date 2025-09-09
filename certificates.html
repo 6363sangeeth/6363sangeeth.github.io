@@ -56,18 +56,21 @@
 
         const container = document.getElementById("certifications");
 
-        certificates.forEach(cert => {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.innerHTML = `
-            <img src="assets/certifications/${cert.file}" alt="${cert.name}">
-            <div class="card-content">
-              <h3>${cert.name}</h3>
-              <p>Date: ${cert.date}</p>
-            </div>
-          `;
-          container.appendChild(card);
-        });
+       certificates.forEach(cert => {
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <a href="assets/certifications/${cert.file}" target="_blank">
+      <img src="assets/certifications/${cert.file}" alt="${cert.name}">
+    </a>
+    <div class="card-content">
+      <h3>${cert.name}</h3>
+      <p>Date: ${cert.date}</p>
+    </div>
+  `;
+  container.appendChild(card);
+});
+
       } catch (error) {
         console.error("Error loading certificates:", error);
       }
