@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Certifications</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+    }
+    header {
+      background: #2c3e50;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      padding: 30px;
+    }
+    .card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      transition: transform 0.2s;
+    }
+    .card:hover { transform: translateY(-5px); }
+    .card img { width: 100%; height: auto; display: block; }
+    .card-content { padding: 15px; text-align: center; }
+    .card-content h3 { margin: 0; font-size: 18px; color: #2c3e50; }
+    .card-content p { margin: 5px 0 0; color: #666; font-size: 14px; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>My Certifications</h1>
+   
+  </header>
+
+  <div class="gallery" id="certifications"></div>
+
+  <script>
+    async function loadCertificates() {
+      const response = await fetch("assets/certifications/certificates.json");
+      const certificates = await response.json();
+
+      // Sort by date (latest first)
+      certificates.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      const container = document.getElementById("certifications");
+
+      certificates.forEach(cert => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="assets/certifications/${cert.file}" alt="${cert.name}">
+          <div class="card-content">
+            <h3>${cert.name}</h3>
+            <p>Date: ${cert.date}</p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    loadCertificates();
+  </script>
+
+</body>
+</html>
