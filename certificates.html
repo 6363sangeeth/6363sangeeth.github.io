@@ -40,33 +40,37 @@
 
   <header>
     <h1>My Certifications</h1>
-   
+    <p>Automatically updated list</p>
   </header>
 
   <div class="gallery" id="certifications"></div>
 
   <script>
     async function loadCertificates() {
-      const response = await fetch("assets/certifications/certificates.json");
-      const certificates = await response.json();
+      try {
+        const response = await fetch("assets/certifications/certificates.json");
+        const certificates = await response.json();
 
-      // Sort by date (latest first)
-      certificates.sort((a, b) => new Date(b.date) - new Date(a.date));
+        // Sort by date (latest first)
+        certificates.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-      const container = document.getElementById("certifications");
+        const container = document.getElementById("certifications");
 
-      certificates.forEach(cert => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <img src="assets/certifications/${cert.file}" alt="${cert.name}">
-          <div class="card-content">
-            <h3>${cert.name}</h3>
-            <p>Date: ${cert.date}</p>
-          </div>
-        `;
-        container.appendChild(card);
-      });
+        certificates.forEach(cert => {
+          const card = document.createElement("div");
+          card.className = "card";
+          card.innerHTML = `
+            <img src="assets/certifications/${cert.file}" alt="${cert.name}">
+            <div class="card-content">
+              <h3>${cert.name}</h3>
+              <p>Date: ${cert.date}</p>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      } catch (error) {
+        console.error("Error loading certificates:", error);
+      }
     }
 
     loadCertificates();
