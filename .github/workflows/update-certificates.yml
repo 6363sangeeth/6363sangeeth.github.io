@@ -1,0 +1,44 @@
+name: Update Certificates JSON
+
+on:
+  push:
+    paths:
+      - "assets/certifications/**"   # Run only when certs change
+  workflow_dispatch:                 # Allow manual run
+
+permissions:
+  contents: write   # ✅ Needed so the workflow can push changes
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Generate certificates.json
+        run: |
+          echo "[" > assets/certifications/certificates.json
+          first=true
+          for file in assets/certifications/*.{jpg,jpeg,png,pdf}; do
+            [ -e "$file" ] || continue
+            filename=$(basename "$file")
+            name=$(echo "$filename" | sed -E 's/\.[^.]+$//; s/_/ /g; s/-/ /g')
+            date=$(git log -1 --format="%cs" -- "$file")
+            if [ "$first" = true ]; then
+              first=false
+            else
+              echo "," >> assets/certifications/certificates.json
+            fi
+            echo "  {\"name\": \"${name^}\", \"file\": \"$filename\", \"date\": \"$date\"}" >> assets/certifications/certificates.json
+          done
+          echo "]" >> assets/certifications/certificates.json
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add assets/certifications/certificates.json
+          git commit -m "Auto-update certificates.json" || echo "No changes to commit"
+          git push
