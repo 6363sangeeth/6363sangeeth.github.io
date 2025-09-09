@@ -40,7 +40,7 @@
 
   <header>
     <h1>My Certifications</h1>
-    <p>Automatically updated list</p>
+    
   </header>
 
   <div class="gallery" id="certifications"></div>
@@ -56,13 +56,13 @@
 
         const container = document.getElementById("certifications");
 
-       certificates.forEach(cert => {
-  const card = document.createElement("div");
+  certificates.forEach(cert => {
+  const card = document.createElement("a");
+  card.href = `assets/certifications/${cert.file}`;
+  card.target = "_blank"; // open in new tab
   card.className = "card";
   card.innerHTML = `
-    <a href="assets/certifications/${cert.file}" target="_blank">
-      <img src="assets/certifications/${cert.file}" alt="${cert.name}">
-    </a>
+    <img src="assets/certifications/${cert.file}" alt="${cert.name}">
     <div class="card-content">
       <h3>${cert.name}</h3>
       <p>Date: ${cert.date}</p>
@@ -70,6 +70,7 @@
   `;
   container.appendChild(card);
 });
+
 
       } catch (error) {
         console.error("Error loading certificates:", error);
