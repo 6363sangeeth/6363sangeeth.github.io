@@ -1,0 +1,22 @@
+[
+  {
+    "name": "AWS Cloud Practitioner",
+    "file": "aws_certificate.png",
+    "date": "2024-12-15"
+  },
+  {
+    "name": "Penetration Testing",
+    "file": "penetration_testing.jpg",
+    "date": "2024-10-05"
+  },
+  {
+    "name": "Ethical Hacking",
+    "file": "ethical_hacking.jpg",
+    "date": "2024-08-22"
+  },
+  {
+    "name": "Cybersecurity Basics",
+    "file": "cybersecurity_basics.jpg",
+    "date": "2024-05-10"
+  }
+]
